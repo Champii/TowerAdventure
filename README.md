@@ -1,3 +1,6 @@
+Massively multiplayer online tower defense in CoffeeScript on Nodejs.
+Developement stoped, version 2 has started.
+
 You'll have to install some NPM packages :
 
 $> npm install socket.io mongoose
