@@ -1,0 +1,337 @@
+<html>
+  <head>
+    <link href="js/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <style>
+
+    body {
+/*       background-image: url("assets/img/wood_back.jpg"); */
+/*       background-size: 100%; */
+/*         background-color: #000000; */
+    }
+
+    .panelContainer {
+      position: absolute;
+      top: 0;
+      width: 15%;
+      height: 100%;
+/*       min-height: 100%; */
+      z-index: 1;
+    }
+
+    .panel {
+      position: absolute;
+      background-color: #333333;
+      top: 5%;
+      width: 15%;
+      height: 95%;
+/*       min-height: 95%; */
+      overflow-y: visible;
+/*       display: none; */
+      opacity: 0.8;
+      z-index: 1;
+    }
+
+    .panelToggle {
+      position: absolute;
+      top: 0;
+      height: 5%;
+      width: 15%;
+      opacity: 0.8;
+      z-index: 1;
+      background-color: #333333;
+    }
+
+    .panelBottomContainer {
+      position: absolute;
+      width: 50%;
+      height: 5%;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      opacity: 0.8;
+      z-index: 3;
+      background-image: url("assets/img/panel_back_bottom.png");
+    }
+    
+
+    .panelResources {
+      position: absolute;
+      width: 70%;
+      height: 5%;
+      top: 0;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      opacity: 0.8;
+      z-index: 1;
+      display: block;
+      background-color: #333333;
+    }
+
+    #panelCommandCenterToggle {
+      right: 0;
+
+    }
+    #commandCenterToggle {
+      color: #FFFFFF;
+    }
+
+    #summaryToggle {
+      color: #FFFFFF;
+      left: 0;
+    }
+
+
+    #panelCommand {
+      right: 0;
+    }
+
+    #panelSummaryContainer {
+      left: 0;
+    }
+
+    #panelResources {
+      color: #FFFFFF;
+    }
+
+
+    #loginScreen {
+      position: relative;
+      top:0;
+      height: 300px;
+      width : 100%;
+      margin : auto;
+    }
+
+    #loginDiv {
+      position: relative;
+      top:50;
+      height: 200px;
+      width : 300px;
+      margin : auto;
+      background-color: #333333;
+      opacity: 0.8;
+      color: #FFF;
+    }
+
+    #errorContainer {
+      position: relative;
+      top: 30;
+      height: 50px;
+      margin : auto;
+      background-color: #333333;
+      opacity: 0.8;
+      color: #FFF;
+    }
+
+    #infoContainer {
+      position: relative;
+      top: 75px;
+      height: 200px;
+      width : 300px;
+      margin : auto;
+      background-color: #333333;
+      opacity: 0.8;
+      color: #FFF;
+    }
+
+    .contextMenu {
+      position: absolute;
+      background-color: #333333;
+      opacity: 0.8;
+    }
+
+    #canvas {
+      position: absolute;
+/*       height: 100%; */
+/*       width: 100%; */
+/*       z-index: ; */
+    }
+
+    #loading {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      background-color: #000000;
+      opacity: 0.8;
+      z-index: 0;
+    }
+
+    .city {
+      position: relative;
+      color: #999999;
+    }
+
+    .well {
+      background-color: #333333;
+
+    }
+
+    #game {
+      background-color: #222222;
+    }
+
+    </style>
+  </head>
+  <body ng-app="TowerAdventure">
+    <div ng-controller="LoginController" id="loginScreen">
+      <center>
+        <h1>Tower Adventure</h1><br />
+        v0.0.1 alpha
+      </center>
+      <div style="text-align:center" id="errorContainer">
+        <h1><label ng-cloak>{{errorMessage}}</label></h1>
+      </div>
+      <div>
+        <div style="text-align:center" id="loginDiv">
+          <h1 ng-hide="insc">Login</h1>
+          <h1 ng-show="insc" ng-cloak>Sign up</h1>
+          Username
+          <input type="text" ng-model="login" placeholder="Login"><br>
+          Password
+          <input type="password" ng-model="pass" placeholder="Password"><br>
+          <label ng-show="insc">Confirmation</label>
+          <input ng-show="insc" type="password" ng-model="passconf" placeholder="Confirm Password" ng-cloak><br>
+          <input ng-show="insc" type="submit" ng-click="signUp()" ng-cloak>
+          <input ng-hide="insc" type="submit" ng-click="go()">
+          <button ng-hide="insc" ng-click="toggleSignUp()">Sign Up</button>
+          <button ng-show="insc" ng-click="toggleSignUp()" ng-cloak>Cancel</button>
+        </div>
+        <div id="infoContainer" style="text-align:center">
+          <h3>Controls :</h3>
+          <p>LeftClick to drag</p>
+          <p>MouseWheel to zoom (ultra buggy)</p>
+          <p>RightClick to show menu</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="game">
+      <canvas id="canvas"></canvas>
+      <div ng-controller="CommandPanelController">
+        <div class="panelToggle" id="panelCommandCenterToggle">
+          <a id="commandCenterToggle"><center><b>Command Center</b></center></a>
+        </div>
+        <div id="panelCommand" class="panel">
+          <div class="tabbable tabs-below" style="height:90%">
+            <div class="tab-content well">
+              <div class="tab-pane active" id="citys" style="height:95%">
+                <div class="accordion" id="cityAccordion">
+                  <div class="accordion-group" ng-repeat="city in citys">
+                    <div class="accordion-heading">
+                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#cityAccordion" href="#{{city.name}}" ng-click="centerOnCity(city)">
+                        {{city.name}}
+                      </a>
+                    </div>
+                    <div id="{{city.name}}" class="accordion-body collapse out">
+                      <div class="accordion-inner">
+                        <center>
+                          <p><small><b>Iron: </b>{{city.resources.iron}} <b>Gold: </b>{{city.resources.gold}} <b>Cristal: </b>{{city.resources.cristal}} <b>Uranium: </b>{{city.resources.uranium}} <b>Petrol: </b>{{city.resources.petrol}} <b>Energy: </b>{{city.resources.energy}}/0 <b>Pop: </b>{{city.resources.pop}}/0</small></p>
+                        </center>
+                        <div class="well" ng-repeat="building in city.buildingManager.towersConstruct">
+                          {{building.name}}
+                          {{building.timeLeft}}
+                          <div class="progress progress-striped active">
+                            <div class="bar" style="width: {{building.percent}}%;">{{building.percent}}%</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id="attacks" style="height:95%">
+                ...
+              </div>
+              <div class="tab-pane" id="chat" style="height:95%">
+                <div ng-repeat="channel in channels">
+                  {{channel.name}}
+                </div>
+              </div>
+              <ul class="nav nav-tabs" id="panelCommandTab">
+                <li class="active"><a href="#citys">Citys</a></li>
+                <li><a href="#attacks">Attacks</a></li>
+                <li><a href="#chat">Chat</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div id="panelResources" class="panelResources">
+        <center><b>Iron: </b>{{currentCity.resources.iron}} <b>Gold: </b>{{currentCity.resources.gold}} <b>Cristal: </b>{{currentCity.resources.cristal}} <b>Uranium: </b>{{currentCity.resources.uranium}} <b>Petrol: </b>{{currentCity.resources.petrol}} <b>Energy: </b>{{currentCity.resources.energy}}/0 <b>Pop: </b>{{currentCity.resources.pop}}/0 <b color="#AA0000">Chunks : {{loadChunkRecvMessages.count}}/{{loadChunkRecvMessages.total}}</b> <b color="#AA0000">Visibles : {{visibleChunks}}</b></center>
+        </div>
+<!--        <div id="loading">
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <center>
+            <h1>Loading :</h1>
+            <h3>
+              <p>Chunks Asked : {{loadChunkAskMessages.count}}</p>
+              <p>Chunks Received : {{loadChunkRecvMessages.count}}/{{loadChunkRecvMessages.total}}</p>
+              <p>Citys Received : {{loadCityMessages.count}}</p>
+              <p>Buildings Received : {{loadBuildingMessages.count}}</p>
+            </h3>
+            <div class="progress progress-striped active">
+              <div class="bar" style="width: {{loadingPercent}}%;">{{loadingPercent}}%</div>
+            </div>
+          </center>
+        </div>-->
+      </div>
+      <div class="panelToggle" id="summaryPanelToggle">
+        <a id="summaryToggle"><center><b>Infos</b></center></a>
+      </div>
+      <div id="panelSummary" class="panel">
+        test
+      </div>
+<!--      <div id="panelBottom" class="panelBottomContainer">
+      </div>-->
+    </div>
+
+    <script type="text/javascript" src="js/angular/angular.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
+<!--     <script src="http://tab-slide-out.googlecode.com/files/jquery.tabSlideOut.v1.3.js" type="text/javascript"></script> -->
+<!--     <script type="text/javascript" src="js/stacktrace/stacktrace.js"></script> -->
+    <script type="text/javascript" src="http://127.0.0.1:8080/socket.io/socket.io.js"></script>
+    
+    <script src="js/contextMenu/src/jquery.ui.position.js" type="text/javascript"></script>
+    <script src="js/contextMenu/src/jquery.contextMenu.js" type="text/javascript"></script>
+    <script src="js/contextMenu/prettify/prettify.js" type="text/javascript"></script>
+    <script src="js/contextMenu/screen.js" type="text/javascript"></script>
+    <link href="js/contextMenu/src/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+    <link href="js/contextMenu/screen.css" rel="stylesheet" type="text/css" />
+    <link href="js/contextMenu/prettify/prettify.sunburst.css" rel="stylesheet" type="text/css" />
+    <link href="js/qTip/dist/jquery.qtip.css" rel="stylesheet" type="text/css" />
+
+    <script src="js/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <script src="js/qTip/dist/jquery.qtip.js" type="text/javascript"></script>
+
+    <script type="text/javascript" src="js/jwerty/jwerty.js"></script>
+    <script type="text/javascript" src="js/kinetic-v4.3.0.min.js"></script>
+
+
+     <script type="text/javascript" src="js/TowerAdventure.js"></script>
+    <script type="text/javascript">
+      $(document.body).on('selectstart', function () { return false; });
+      $("#game").hide();
+      $('#panelCommand').hide()
+      $('#panelSummary').hide()
+      $("#errorContainer").css('opacity', '0.0');
+
+
+      $('#commandCenterToggle').click(function () {
+        $('#panelCommand').slideToggle(); 
+
+      });
+      
+      $('#summaryToggle').click(function () {
+        $('#panelSummary').slideToggle();
+      });
+
+      document.oncontextmenu = function () { return false; }
+
+    </script>
+  </body>
+</html>

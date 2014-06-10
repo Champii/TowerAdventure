@@ -1,0 +1,15 @@
+{
+    "name": "AutiX",
+    "description": "Champiis's brand new concept game of the next future",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "socket.io": "0.9.x",
+        "mongoose": "3.5.x",
+        "coffee-toaster": "0.6.x"
+    },
+
+    "scripts": {
+        "start": "node_modules/coffee-toaster/bin/toaster -a"
+    }
+}

@@ -1,0 +1,75 @@
+Architect Office people : Relative to level (1-1)
+
+Tower parallel build slots : Nb builders relative to tower to build
+
+[Technos :]
+
+*Defense science          : Lab lvl1
+
+--Defense Power Science   : Lab lvl3
+                          : Defense Science lvl 3
+                          
+--Defense Range Science   : Lab lvl3
+                          : Defense Science lvl 3
+                          
+--Defense Rate Science    : Lab lvl3
+                          : Defense Science lvl 3
+                          
+--Defense Area Science    : Lab lvl3
+                          : Defense Science lvl 3
+                          
+*Attack science           : Lab lvl5
+
+--Attack Power Science    : Lab lvl8
+                          : Attack Science lvl3
+                          
+--Attack Range Science    : Lab lvl8
+                          : Attack Science lvl 3
+                          
+--Attack Rate Science     : Lab lvl8
+                          : Attack Science lvl 3
+                          
+--Attack Area Science     : Lab lvl8
+                          : Attack Science lvl 3
+                          
+
+[mine :] (no pre required)
+iron
+gold
+cristal
+uranium
+petrol
+energy
+
+-----Towers-----
+
+Base tower            : no pre required
+
+[SpawnTower]
+
+  BaseSpawnerTower    : Attack Science lvl1
+
+[DefenseTower]
+
+  BaseDefenseTower    : Defense Science lvl1
+
+  [PowerTower]
+  
+    PowerTower        : Defense Science lvl 3
+                      : Defense Power Science lvl 1
+
+  [RangeTower]
+  
+    RangeTower        : Defense Science lvl 3
+                      : Defense Range Science lvl 1
+
+  [RateTower]
+
+    RateTower         : Defense Science lvl 3
+                      : Defense Rate Science lvl 1
+
+  [AreaTower]
+
+    AreaTower         : Defense Science lvl 3
+                      : Defense Area Science lvl 1
+  
